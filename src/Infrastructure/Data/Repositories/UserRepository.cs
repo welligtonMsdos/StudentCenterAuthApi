@@ -44,4 +44,20 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+
+    public async Task<User> UserLogin(User user)
+    {
+        var userLogin = await _context.Users
+            .Find(u => u.Email == user.Email)
+            .FirstOrDefaultAsync();
+
+        var isPasswordValid = BCrypt.Net.BCrypt.Verify(user.PassWord,userLogin.PassWord);
+
+        if (!isPasswordValid)
+        {
+            throw new Exception("Invalid Password");
+        }
+
+        return userLogin;
+    }
 }

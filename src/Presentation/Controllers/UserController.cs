@@ -15,8 +15,22 @@ public class UserController : Controller
         _service = service;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetStudents()
+    [HttpGet("[Action]")]
+    public async Task<IActionResult> GetUserLogin(string Email, string PassWord)
+    {
+        try
+        {
+            return Ok(await _service.UserLogin(Email, PassWord));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
+    [HttpGet("[Action]")]
+    public async Task<IActionResult> GetUsers()
     {
         try
         {
@@ -54,7 +68,7 @@ public class UserController : Controller
         }
     }
 
-    [HttpPut("{id:length(24)}")] 
+    [HttpPut("{id:length(24)}")]
     public async Task<IActionResult> UpdateUserNameAndEmail(string id, [FromBody] UserUpdateDto userUpdateDto)
     {
         try

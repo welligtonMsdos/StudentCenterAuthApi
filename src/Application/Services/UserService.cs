@@ -54,5 +54,16 @@ public class UserService : IUserService
         passWord += DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day;
 
         return passWord;
-    }   
+    }
+
+    public async Task<UserDataLoginDto> UserLogin(string Email, string PassWord)
+    {
+        var userLoginDto = new UserLoginDto(Email, PassWord);
+
+        var user = _mapper.Map<User>(userLoginDto);
+
+        var userLogged = await _repository.UserLogin(user);
+
+        return _mapper.Map<UserDataLoginDto>(userLogged);
+    }
 }

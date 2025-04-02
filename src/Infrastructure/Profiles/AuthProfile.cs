@@ -9,5 +9,7 @@ public class AuthProfile : Profile
     public AuthProfile()
     {
         CreateMap<User, UserDto>().ReverseMap();
+        CreateMap<User, UserCreateDto>().ReverseMap();
+        CreateMap<User, UserUpdateDto>().ReverseMap();
     }
 }

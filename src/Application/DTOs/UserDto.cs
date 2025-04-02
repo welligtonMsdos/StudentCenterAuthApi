@@ -1,3 +1,5 @@
 ﻿namespace StudentCenterAuthApi.src.Application.DTOs;
 
-public record UserDto(string Name, string Email);
+public record UserDto(string _id,
+                      string Name, 
+                      string Email);

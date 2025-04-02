@@ -15,30 +15,33 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task<bool> Delete(User entity)
+    public async Task<bool> DeleteByEmail(string email)
     {
-        throw new NotImplementedException();
+        var result = await _context.Users.DeleteOneAsync(user => user.Email == email);
+      
+        return result.DeletedCount > 0;
     }
-
-    public async Task<ICollection<User>> GetAll()
+    public async Task<ICollection<User>> GetAllUsers()
     {
         var users = await _context.Users.Find(_ => true).ToListAsync();
 
         return users;
-    }
-
-    public Task<User> GetById(int id)
+    }   
+    public async Task<User> AddNewUser(User user)
     {
-        throw new NotImplementedException();
-    }
+        await _context.Users.InsertOneAsync(user);
 
-    public Task<User> Post(User entity)
-    {
-        throw new NotImplementedException();
+        return user;
     }
-
-    public Task<User> Put(User entity)
+    public async Task<User> UpdateNameAndEmail(string id, User user)
     {
-        throw new NotImplementedException();
+        await _context.Users.UpdateOneAsync(
+                Builders<User>.Filter.Eq(u => u._id, id), 
+                Builders<User>.Update
+                .Set(u => u.Name, user.Name)   
+                .Set(u => u.Email, user.Email) 
+                );
+
+        return user;
     }
 }

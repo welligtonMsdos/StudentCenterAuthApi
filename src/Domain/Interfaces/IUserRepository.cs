@@ -2,6 +2,10 @@
 
 namespace StudentCenterAuthApi.src.Domain.Interfaces;
 
-public interface IUserRepository : IGeneric<User>
+public interface IUserRepository 
 {
+    Task<ICollection<User>> GetAllUsers();
+    Task<User> AddNewUser(User user);
+    Task<bool> DeleteByEmail(string email);
+    Task<User> UpdateNameAndEmail(string id, User user);
 }

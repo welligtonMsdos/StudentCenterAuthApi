@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentCenterAuthApi.src.Application.DTOs;
 using StudentCenterAuthApi.src.Application.Interfaces;
 
@@ -29,6 +30,7 @@ public class UserController : Controller
     }
 
 
+    [Authorize]
     [HttpGet("[Action]")]
     public async Task<IActionResult> GetUsers()
     {
@@ -67,13 +69,26 @@ public class UserController : Controller
             return BadRequest(ex.Message);
         }
     }
-
-    [HttpPut("{id:length(24)}")]
+   
+    [HttpPut("[Action]/{id:length(24)}")]
     public async Task<IActionResult> UpdateUserNameAndEmail(string id, [FromBody] UserUpdateDto userUpdateDto)
     {
         try
         {
             return Ok(await _service.UpdateNameAndEmail(id, userUpdateDto));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("[Action]/{id:length(24)}")]
+    public async Task<IActionResult> UpdatePassword(string id, string passWord)
+    {
+        try
+        {
+            return Ok(await _service.UpdatePassword(id, passWord));
         }
         catch (Exception ex)
         {

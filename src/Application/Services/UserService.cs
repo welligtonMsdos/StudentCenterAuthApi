@@ -66,4 +66,11 @@ public class UserService : IUserService
 
         return _mapper.Map<UserDataLoginDto>(userLogged);
     }
+
+    public async Task<UserDataLoginDto> UpdatePassword(string id, string passWord)
+    {
+        var newPassword = BCrypt.Net.BCrypt.HashPassword(passWord);
+
+        return _mapper.Map<UserDataLoginDto>(await _repository.UpdatePassword(id, newPassword));
+    }
 }

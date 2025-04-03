@@ -44,20 +44,33 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+    public async Task<User> UpdatePassword(string id, string passWord)
+    {
+        await _context.Users.UpdateOneAsync(
+               Builders<User>.Filter.Eq(u => u._id, id),
+               Builders<User>.Update
+               .Set(u => u.PassWord, passWord)
+               .Set(u => u.FirstAccess, true)
+               .Set(u => u.LastAccess, DateTime.Now)
+               );
 
+        var user = await _context.Users.Find(u => u._id == id).FirstOrDefaultAsync();
+
+        return user;
+    }
     public async Task<User> UserLogin(User user)
     {
         var userLogin = await _context.Users
             .Find(u => u.Email == user.Email)
             .FirstOrDefaultAsync();
 
+        if(userLogin == null) throw new Exception("User not found");
+
         var isPasswordValid = BCrypt.Net.BCrypt.Verify(user.PassWord,userLogin.PassWord);
 
-        if (!isPasswordValid)
-        {
-            throw new Exception("Invalid Password");
-        }
+        if (!isPasswordValid) throw new Exception("Invalid Password");
 
         return userLogin;
     }
+   
 }

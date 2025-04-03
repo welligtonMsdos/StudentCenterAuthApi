@@ -9,5 +9,6 @@ public interface IUserRepository
     Task<User> AddNewUser(User user);
     Task<bool> DeleteByEmail(string email);
     Task<User> UpdateNameAndEmail(string id, User user);
+    Task<User> UpdatePassword(string id, string passWord);
     Task<User> UserLogin(User user);
 }

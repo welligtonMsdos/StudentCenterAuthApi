@@ -7,7 +7,7 @@ namespace StudentCenterAuthApi.src.Presentation.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class UserController : Controller
+public class UserController : BaseController
 {
     private readonly IUserService _service;
 
@@ -25,7 +25,7 @@ public class UserController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
 
@@ -40,7 +40,7 @@ public class UserController : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
 
@@ -49,11 +49,11 @@ public class UserController : Controller
     {
         try
         {
-            return Ok(await _service.AddNewUser(userDto));
+            return Sucess(await _service.AddNewUser(userDto));
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
 
@@ -62,11 +62,11 @@ public class UserController : Controller
     {
         try
         {
-            return Ok(await _service.DeleteByEmail(email));
+            return Sucess(await _service.DeleteByEmail(email));
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
    
@@ -75,11 +75,11 @@ public class UserController : Controller
     {
         try
         {
-            return Ok(await _service.UpdateNameAndEmail(id, userUpdateDto));
+            return Sucess(await _service.UpdateNameAndEmail(id, userUpdateDto));
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
 
@@ -88,11 +88,11 @@ public class UserController : Controller
     {
         try
         {
-            return Ok(await _service.UpdatePassword(id, passWord));
+            return Sucess(await _service.UpdatePassword(id, passWord));
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Error(ex);
         }
     }
 }

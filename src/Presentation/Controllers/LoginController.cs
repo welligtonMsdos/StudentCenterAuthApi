@@ -7,7 +7,7 @@ namespace StudentCenterAuthApi.src.Presentation.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class LoginController : Controller
+public class LoginController : BaseController
 {
     private readonly IUserService _userService;
     private readonly ITokenGenerator _tokenGenerator;
@@ -21,12 +21,19 @@ public class LoginController : Controller
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
-        var user = await _userService.UserLogin(userLoginDto.Email, userLoginDto.PassWord);
+        try
+        {
+            var user = await _userService.UserLogin(userLoginDto.Email, userLoginDto.PassWord);
 
-        if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized();
 
-        var token = _tokenGenerator.GenerateToken(user);
+            var token = _tokenGenerator.GenerateToken(user);
 
-        return Ok(new { token });
+            return Sucess(token);
+        }
+        catch (Exception ex)
+        {
+            return Error(ex);
+        }       
     }
 }

@@ -4,5 +4,5 @@ namespace StudentCenterAuthApi.src.Domain.Interfaces;
 
 public interface ITokenGenerator
 {
-    string GenerateToken(UserDataLoginDto userDto);
+    Task<string> GenerateToken(UserDataLoginDto userDto);
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using StudentCenterAuthApi.src.Application.DTOs;
 using StudentCenterAuthApi.src.Domain.Interfaces;
-using StudentCenterAuthApi.src.Domain.Model;
+using StudentCenterAuthApi.src.Infrastructure.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,11 +10,13 @@ namespace StudentCenterAuthApi.src.Infrastructure.Data.Authentication;
 
 public class TokenGenenator : ITokenGenerator
 {    
-    public string GenerateToken(UserDataLoginDto userDto)
+    public async Task<string> GenerateToken(UserDataLoginDto userDto)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
-        var key = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e");
+        var valorKey = await Util.GetKeyVault();
+
+        var key = Encoding.ASCII.GetBytes(valorKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -31,5 +33,5 @@ public class TokenGenenator : ITokenGenerator
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(token);
-    }   
+    }    
 }

@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StudentCenterAuthApi.src.Infrastructure.Data.Context;
 using StudentCenterAuthApi.src.Infrastructure.Dependency_Injection;
+using StudentCenterAuthApi.src.Infrastructure.Utils;
 using System.Text;
 
 namespace StudentCenterAuthApi
@@ -55,7 +56,9 @@ namespace StudentCenterAuthApi
 
             builder.Services.AddInterfaces(builder.Configuration);
 
-            var key = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e");
+            var keyVault = Util.GetKeyVault().Result;
+
+            var key = Encoding.ASCII.GetBytes(keyVault);            
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

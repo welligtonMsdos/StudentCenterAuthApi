@@ -4,22 +4,22 @@ using Azure.Security.KeyVault.Secrets;
 namespace StudentCenterAuthApi.src.Infrastructure.Utils;
 
 public static class Util
-{
+{  
     public static Task<string> GetKeyVault()
     {
 		try
 		{
-            //var client = new SecretClient(new Uri("https://studentcenterkey.vault.azure.net/"), new DefaultAzureCredential());
+            string keyVaultUrl = "https://jwtsecretsc.vault.azure.net/";
 
-            //KeyVaultSecret secret = await client.GetSecretAsync("studentCenterKey");
+            var client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
 
-            //return secret.Value;
+            KeyVaultSecret secret = client.GetSecret("JwtSecret");
 
-            return Task.FromResult("fedaf7d8863b48e197b9287d492b708e");
+            return Task.FromResult(secret.Value);
         }
 		catch (Exception)
 		{
-            return Task.FromResult("fedaf7d8863b48e197b9287d492b708e");
+            return Task.FromResult("key not found");
         }        
-    }    
+    }
 }

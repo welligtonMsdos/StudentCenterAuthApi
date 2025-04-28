@@ -14,7 +14,7 @@ public class TokenGenenator : ITokenGenerator
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
-        var keyVault = await Util.GetKeyVault();
+        var keyVault = await Util.GetSecretWithCacheAsync();
        
         var key = Encoding.ASCII.GetBytes(keyVault);
 

@@ -20,7 +20,8 @@ namespace StudentCenterAuthApi
                 {
                     builder.WithOrigins("https://studentcenterweb-f9bucggxcjcrescj.brazilsouth-01.azurewebsites.net", 
                                         "https://studentcenteracademic-b8b6ajakhcg4dsbx.brazilsouth-01.azurewebsites.net",
-                                        "https://localhost:7260")
+                                        "https://localhost:7260",
+                                        "https://localhost:7236")
                            .AllowCredentials()
                            .AllowAnyHeader()
                            .AllowAnyMethod();
@@ -69,7 +70,7 @@ namespace StudentCenterAuthApi
 
             builder.Services.AddInterfaces(builder.Configuration);
 
-            var key = Encoding.ASCII.GetBytes(Util.GetKeyVault().Result);            
+            var key = Encoding.ASCII.GetBytes(Util.GetSecretWithCacheAsync().Result);            
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

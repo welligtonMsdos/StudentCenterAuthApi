@@ -16,19 +16,19 @@ public class UserController : BaseController
         _service = service;
     }
 
+    [Authorize]
     [HttpGet("[Action]")]
     public async Task<IActionResult> GetUserLogin(string Email, string PassWord)
     {
         try
         {
-            return Ok(await _service.UserLogin(Email, PassWord));
+            return Ok(await _service.AuthenticateUser(Email, PassWord));
         }
         catch (Exception ex)
         {
             return Error(ex);
         }
     }
-
 
     [Authorize]
     [HttpGet("[Action]")]
@@ -44,6 +44,7 @@ public class UserController : BaseController
         }
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] UserCreateDto userDto)
     {
@@ -57,6 +58,7 @@ public class UserController : BaseController
         }
     }
 
+    [Authorize]
     [HttpDelete("{email}")]
     public async Task<ActionResult> Delete(string email)
     {
@@ -69,7 +71,8 @@ public class UserController : BaseController
             return Error(ex);
         }
     }
-   
+
+    [Authorize]
     [HttpPut("[Action]/{id:length(24)}")]
     public async Task<IActionResult> UpdateUserNameAndEmail(string id, [FromBody] UserUpdateDto userUpdateDto)
     {
@@ -83,6 +86,7 @@ public class UserController : BaseController
         }
     }
 
+    [Authorize]
     [HttpPut("[Action]/{id:length(24)}")]
     public async Task<IActionResult> UpdatePassword(string id, string passWord)
     {

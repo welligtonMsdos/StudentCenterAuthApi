@@ -23,7 +23,8 @@ public class TokenGenenator : ITokenGenerator
             Subject = new ClaimsIdentity(new Claim[]
             {
                     new Claim("email", userDto.Email),
-                    new Claim("id", userDto._id)
+                    new Claim("id", userDto._id),
+                    new Claim("name", userDto.Name),
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             Issuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",

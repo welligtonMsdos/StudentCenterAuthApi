@@ -11,7 +11,7 @@ public abstract class BaseController : ControllerBase
         return Ok(new
         {
             success = true,
-            message = isUpdate ? "successfully updated" : "successfully created",
+            message = isUpdate ? "Atualizado com sucesso" : "Salvo com sucesso",
             data = result
         });
     }

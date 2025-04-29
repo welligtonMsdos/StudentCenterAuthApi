@@ -23,7 +23,7 @@ public class LoginController : BaseController
     {
         try
         {
-            var user = await _userService.UserLogin(userLoginDto.Email, userLoginDto.PassWord);
+            var user = await _userService.AuthenticateUser(userLoginDto.Email, userLoginDto.PassWord);
 
             if (user == null) return Unauthorized();
 

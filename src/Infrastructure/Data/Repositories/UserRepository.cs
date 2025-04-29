@@ -17,22 +17,31 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> DeleteByEmail(string email)
     {
+        var userLogin = await _context.Users
+            .Find(u => u.Email == email)
+            .FirstOrDefaultAsync();
+
+        if (userLogin == null) throw new Exception("Usuário não encontrado\n" + email);
+
         var result = await _context.Users.DeleteOneAsync(user => user.Email == email);
       
         return result.DeletedCount > 0;
     }
+
     public async Task<ICollection<User>> GetAllUsers()
     {
         var users = await _context.Users.Find(_ => true).ToListAsync();
 
         return users;
     }   
+
     public async Task<User> AddNewUser(User user)
     {
         await _context.Users.InsertOneAsync(user);
 
         return user;
     }
+
     public async Task<User> UpdateNameAndEmail(string id, User user)
     {
         await _context.Users.UpdateOneAsync(
@@ -44,6 +53,7 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+
     public async Task<User> UpdatePassword(string id, string passWord)
     {
         await _context.Users.UpdateOneAsync(
@@ -58,19 +68,35 @@ public class UserRepository : IUserRepository
 
         return user;
     }
-    public async Task<User> UserLogin(User user)
+
+    public async Task<User> AuthenticateUser(User user)
     {
         var userLogin = await _context.Users
-            .Find(u => u.Email == user.Email)
-            .FirstOrDefaultAsync();
+             .Find(u => u.Email == user.Email)
+             .FirstOrDefaultAsync();
 
-        if(userLogin == null) throw new Exception("User not found");
+        if (userLogin == null) throw new Exception("Usuário não encontrado");
 
-        var isPasswordValid = BCrypt.Net.BCrypt.Verify(user.PassWord,userLogin.PassWord);
+        var isPasswordValid = BCrypt.Net.BCrypt.Verify(user.PassWord, userLogin.PassWord);
 
-        if (!isPasswordValid) throw new Exception("Invalid Password");
+        if (!isPasswordValid) throw new Exception("Senha inválida!");
 
         return userLogin;
     }
-   
+
+    public async Task<User> UpdateLastAccess(User user)
+    {
+        var userLogin = await _context.Users
+             .Find(u => u.Email == user.Email)
+             .FirstOrDefaultAsync();
+
+        await _context.Users.UpdateOneAsync(
+                Builders<User>.Filter.Eq(u => u._id, userLogin._id),
+                Builders<User>.Update
+                .Set(u => u.FirstAccess, user.FirstAccess)
+                .Set(u => u.LastAccess, user.LastAccess)
+                );
+
+        return userLogin;
+    }   
 }

@@ -2,4 +2,5 @@
 
 public record UserDto(string _id,
                       string Name, 
-                      string Email);
+                      string Email,
+                      string PassWord);

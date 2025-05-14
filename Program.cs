@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StudentCenterAuthApi.src.Application.Interfaces;
+using StudentCenterAuthApi.src.Application.Services;
 using StudentCenterAuthApi.src.Infrastructure.Data.Context;
 using StudentCenterAuthApi.src.Infrastructure.Dependency_Injection;
 using StudentCenterAuthApi.src.Infrastructure.Utils;
@@ -63,6 +65,8 @@ namespace StudentCenterAuthApi
                     }
                  });
             });
+
+            builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
 
             builder.Services.AddSingleton<AuthContext>();
 

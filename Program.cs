@@ -85,7 +85,8 @@ namespace StudentCenterAuthApi
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",
+                    //ValidIssuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",
+                    ValidIssuer = "https://localhost:7048",
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });

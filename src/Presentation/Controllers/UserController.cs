@@ -10,10 +10,13 @@ namespace StudentCenterAuthApi.src.Presentation.Controllers;
 public class UserController : BaseController
 {
     private readonly IUserService _service;
+    private readonly IRabbitMQService _rabbitMQService;
 
-    public UserController(IUserService service)
+    public UserController(IUserService service, 
+                          IRabbitMQService rabbitMQService)
     {
         _service = service;
+        _rabbitMQService = rabbitMQService;
     }
 
     [Authorize]
@@ -50,7 +53,11 @@ public class UserController : BaseController
     {
         try
         {
-            return Sucess(await _service.AddNewUser(userDto));
+            var newUser = await _service.AddNewUser(userDto);
+
+            var resultRabbitMQ = _rabbitMQService.PublishMessage(newUser);
+
+            return Sucess(newUser);
         }
         catch (Exception ex)
         {

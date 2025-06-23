@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StudentCenterAuthApi.src.Application.Interfaces;
+using StudentCenterAuthApi.src.Application.Services;
 using StudentCenterAuthApi.src.Infrastructure.Data.Context;
 using StudentCenterAuthApi.src.Infrastructure.Dependency_Injection;
 using StudentCenterAuthApi.src.Infrastructure.Utils;
@@ -64,6 +66,8 @@ namespace StudentCenterAuthApi
                  });
             });
 
+            builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+
             builder.Services.AddSingleton<AuthContext>();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -81,7 +85,8 @@ namespace StudentCenterAuthApi
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",
+                    //ValidIssuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",
+                    ValidIssuer = "https://localhost:7048",
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });

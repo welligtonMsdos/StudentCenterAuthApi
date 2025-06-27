@@ -28,7 +28,7 @@ public class TokenGenenator : ITokenGenerator
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             //Issuer = "https://studentcenterauthapi-gna4fkhdgmbyg8cc.brazilsouth-01.azurewebsites.net",
-            Issuer = "https://localhost:7048",
+            Issuer = "http://localhost:5000",
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 

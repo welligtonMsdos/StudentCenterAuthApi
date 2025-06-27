@@ -101,6 +101,8 @@ namespace StudentCenterAuthApi
                 app.UseSwaggerUI();
             }
 
+            app.Urls.Add("http://0.0.0.0:80");
+
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();

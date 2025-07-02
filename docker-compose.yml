@@ -1,12 +1,37 @@
-﻿services:
+﻿version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-sc
+    hostname: studentcenterservices
+    ports:
+      - "5673:5672"     # Porta AMQP externa:interna
+      - "15673:15672"   # Interface web externa:interna
+    networks:
+      - appnet
+
   student-center-auth:
     container_name: student-center-auth-api
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:80"   
+      - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQHost=studentcenterservices
+      - RabbitMQPort=5672
+      - RabbitMQUser=guest
+      - RabbitMQPassword=guest
     volumes:
       - ./dataprotection-keys:/home/app/.aspnet/DataProtection-Keys
+    depends_on:
+      - rabbitmq
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
+

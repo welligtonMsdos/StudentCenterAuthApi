@@ -19,7 +19,9 @@ public class RabbitMQService : IRabbitMQService
         _connection = new ConnectionFactory()
         {
             HostName = _configuration["RabbitMQHost"],
-            Port = int.Parse(_configuration["RabbitMQPort"])
+            Port = int.Parse(_configuration["RabbitMQPort"]),
+            UserName = _configuration["RabbitMQUser"],
+            Password = _configuration["RabbitMQPassword"]
         }.CreateConnection();
 
         _channel = _connection.CreateModel();

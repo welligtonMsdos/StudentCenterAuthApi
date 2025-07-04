@@ -26,23 +26,29 @@ public class RabbitMQService : IRabbitMQService
 
         _channel = _connection.CreateModel();
 
-        //_channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
-        _channel.ExchangeDeclare("trigger", ExchangeType.Fanout, durable: false, autoDelete: false, arguments: null);
+        //_channel.ExchangeDeclare("trigger", ExchangeType.Fanout, durable: false, autoDelete: false, arguments: null);
 
-        var queueName = _channel.QueueDeclare(
-                queue: "debug-trigger",
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-            ).QueueName;
-        
+        _channel.ExchangeDeclare(
+            exchange: "trigger",
+            type: ExchangeType.Fanout,
+            durable: false,
+            autoDelete: false,
+            arguments: null
+        );
+
+        _channel.QueueDeclare(
+            queue: "trigger",
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
+
         _channel.QueueBind(
-            queue: queueName,
+            queue: "trigger",
             exchange: "trigger",
             routingKey: ""
         );
-
     }
 
     public Task<bool> PublishMessage(UserDto userDto)

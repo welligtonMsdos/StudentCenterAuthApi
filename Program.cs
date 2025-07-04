@@ -89,6 +89,11 @@ namespace StudentCenterAuthApi
                 };
             });
 
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.ListenAnyIP(80);
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -96,8 +101,6 @@ namespace StudentCenterAuthApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.Urls.Add("http://0.0.0.0:80");
 
             app.UseCors("CorsPolicy");
 

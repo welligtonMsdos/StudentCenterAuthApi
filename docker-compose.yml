@@ -1,37 +1,46 @@
 ﻿version: "3.9"
 
 services:
+
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq-sc
-    hostname: studentcenterservices
+    container_name: rabbitmq
+    hostname: rabbit
     ports:
-      - "5673:5672"     # Porta AMQP externa:interna
-      - "15673:15672"   # Interface web externa:interna
+      - "5672:5672"
+      - "15672:15672"
     networks:
-      - appnet
+      - student-center-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   student-center-auth:
     container_name: student-center-auth-api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile   
     ports:
       - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - RabbitMQHost=studentcenterservices
+      - RabbitMQHost=rabbit
       - RabbitMQPort=5672
       - RabbitMQUser=guest
       - RabbitMQPassword=guest
     volumes:
-      - ./dataprotection-keys:/home/app/.aspnet/DataProtection-Keys
+      - ./dataprotection-keys:/home/app/.aspnet/DataProtection-Keys   
+    networks:
+      - student-center-net
     depends_on:
       - rabbitmq
-    networks:
-      - appnet
 
 networks:
-  appnet:
-    driver: bridge
+  student-center-net:
+    external: true
+
+
 

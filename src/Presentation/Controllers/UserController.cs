@@ -5,6 +5,9 @@ using StudentCenterAuthApi.src.Application.Interfaces;
 
 namespace StudentCenterAuthApi.src.Presentation.Controllers;
 
+/// <summary>
+/// Controller responsible for handling user-related operations via RESTful endpoints
+/// </summary>
 [ApiController]
 [Route("api/v1/[controller]")]
 public class UserController : BaseController
@@ -12,6 +15,11 @@ public class UserController : BaseController
     private readonly IUserService _service;
     private readonly IRabbitMQService _rabbitMQService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserController"/> class
+    /// </summary>
+    /// <param name="service">Service for managing user operations</param>
+    /// <param name="rabbitMQService">Service for messaging with RabbitMQ</param>
     public UserController(IUserService service, 
                           IRabbitMQService rabbitMQService)
     {
@@ -19,6 +27,12 @@ public class UserController : BaseController
         _rabbitMQService = rabbitMQService;
     }
 
+    /// <summary>
+    /// Retrieves login information for a user based on credentials
+    /// </summary>
+    /// <param name="Email">User's email address</param>
+    /// <param name="PassWord">User's password</param>
+    /// <returns>User login data or unauthorized result</returns>
     [Authorize]
     [HttpGet("[Action]")]
     public async Task<IActionResult> GetUserLogin(string Email, string PassWord)
@@ -33,6 +47,10 @@ public class UserController : BaseController
         }
     }
 
+    /// <summary>
+    /// Retrieves all users in the system
+    /// </summary>
+    /// <returns>A list of users</returns>
     [Authorize]
     [HttpGet("[Action]")]
     public async Task<IActionResult> GetUsers()
@@ -47,6 +65,11 @@ public class UserController : BaseController
         }
     }
 
+    /// <summary>
+    /// Creates a new user with the provided data
+    /// </summary>
+    /// <param name="userDto">User information for creation</param>
+    /// <returns>Status result indicating success or failure</returns>
     [Authorize]
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] UserCreateDto userDto)
@@ -65,6 +88,11 @@ public class UserController : BaseController
         }
     }
 
+    /// <summary>
+    /// Deletes a user by their email address
+    /// </summary>
+    /// <param name="email">Email of the user to delete</param>
+    /// <returns>Status result indicating success or failure</returns>
     [Authorize]
     [HttpDelete("{email}")]
     public async Task<ActionResult> Delete(string email)
@@ -79,6 +107,12 @@ public class UserController : BaseController
         }
     }
 
+    /// <summary>
+    /// Updates the user's name and email based on their ID
+    /// </summary>
+    /// <param name="id">Unique identifier of the user</param>
+    /// <param name="userUpdateDto">New name and email data</param>
+    /// <returns>Status result with the updated user information</returns>
     [Authorize]
     [HttpPut("[Action]/{id:length(24)}")]
     public async Task<IActionResult> UpdateUserNameAndEmail(string id, [FromBody] UserUpdateDto userUpdateDto)
@@ -93,6 +127,12 @@ public class UserController : BaseController
         }
     }
 
+    /// <summary>
+    /// Updates a user's password based on their ID
+    /// </summary>
+    /// <param name="id">User ID</param>
+    /// <param name="passWord">New password to be set</param>
+    /// <returns>Status result with login data or error</returns>
     [Authorize]
     [HttpPut("[Action]/{id:length(24)}")]
     public async Task<IActionResult> UpdatePassword(string id, string passWord)

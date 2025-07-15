@@ -21,7 +21,8 @@ namespace StudentCenterAuthApi
                 options.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.WithOrigins("http://localhost:5001",
-                                        "http://localhost:5003")
+                                        "http://localhost:5003",
+                                        "https://localhost:7291")
                            .AllowCredentials()
                            .AllowAnyHeader()
                            .AllowAnyMethod();

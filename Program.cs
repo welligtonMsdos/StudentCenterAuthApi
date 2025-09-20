@@ -22,7 +22,8 @@ namespace StudentCenterAuthApi
                 {
                     builder.WithOrigins("http://localhost:5001",
                                         "http://localhost:5003",
-                                        "https://localhost:7291")
+                                        "https://localhost:7291",
+                                        "http://localhost:4200")
                            .AllowCredentials()
                            .AllowAnyHeader()
                            .AllowAnyMethod();
